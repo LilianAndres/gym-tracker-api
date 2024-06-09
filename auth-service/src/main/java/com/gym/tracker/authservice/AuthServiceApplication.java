@@ -1,17 +1,15 @@
-package com.gym.tracker.gateway;
+package com.gym.tracker.authservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.web.reactive.config.EnableWebFlux;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableWebFlux
-public class GatewayApplication {
+public class AuthServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GatewayApplication.class, args);
+		SpringApplication.run(AuthServiceApplication.class, args);
 	}
 
 }

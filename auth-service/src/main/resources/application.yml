@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: auth-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+server:
+  port: 8082
+
+eureka:
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+jwt:
+  secret: "my-secret"
+  expiration: 3600000
