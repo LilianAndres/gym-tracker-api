@@ -10,10 +10,10 @@ public class GatewayConfiguration {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("user-service", r -> r.path("/api/users/**")
-                        .uri("lb://user-service"))
                 .route("auth-service", r -> r.path("/api/auth/**")
                         .uri("lb://auth-service"))
+                .route("user-service", r -> r.path("/api/users/**")
+                        .uri("lb://user-service"))
                 .build();
     }
 }

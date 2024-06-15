@@ -4,7 +4,7 @@ import com.gym.tracker.authservice.dto.request.LoginRequest;
 import com.gym.tracker.authservice.dto.response.LoginResponse;
 import com.gym.tracker.authservice.entity.AppUser;
 import com.gym.tracker.authservice.service.AuthenticationService;
-import com.gym.tracker.authservice.service.JwtService;
+import com.gym.tracker.common.service.JwtService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -12,16 +12,13 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final RestTemplate restTemplate;
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
 
     public AuthController(
-            RestTemplate restTemplate,
             JwtService jwtService,
             AuthenticationService authenticationService
     ) {
-        this.restTemplate = restTemplate;
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
     }

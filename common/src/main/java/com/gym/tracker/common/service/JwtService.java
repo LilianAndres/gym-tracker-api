@@ -1,4 +1,4 @@
-package com.gym.tracker.authservice.service;
+package com.gym.tracker.common.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
