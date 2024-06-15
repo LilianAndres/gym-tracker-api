@@ -1,44 +1,39 @@
 package com.gym.tracker.authservice.controller;
 
-import com.gym.tracker.authservice.dto.LoginRequest;
+import com.gym.tracker.authservice.dto.request.LoginRequest;
+import com.gym.tracker.authservice.dto.response.LoginResponse;
+import com.gym.tracker.authservice.entity.AppUser;
+import com.gym.tracker.authservice.service.AuthenticationService;
 import com.gym.tracker.authservice.service.JwtService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final AuthenticationManager authenticationManager;
-
     private final RestTemplate restTemplate;
-
     private final JwtService jwtService;
+    private final AuthenticationService authenticationService;
 
-    public AuthController(RestTemplate restTemplate, AuthenticationManager authenticationManager, JwtService jwtService) {
-        this.authenticationManager = authenticationManager;
+    public AuthController(
+            RestTemplate restTemplate,
+            JwtService jwtService,
+            AuthenticationService authenticationService
+    ) {
         this.restTemplate = restTemplate;
         this.jwtService = jwtService;
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest authRequest) {
-        String url = "http://localhost:8083/api/users/verify";
-        ResponseEntity<Boolean> response = restTemplate.postForEntity(url, authRequest, Boolean.class);
-        boolean isAuthenticated = Boolean.TRUE.equals(response.getBody());
-        if (isAuthenticated) {
-            String token = jwtService.createToken(authRequest.getEmail());
-            return ResponseEntity.ok(token);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        }
-    }
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest authRequest) {
+        AppUser authenticatedUser = authenticationService.login(authRequest);
+        LoginResponse loginResponse = LoginResponse.builder()
+                .token(jwtService.generateToken(authenticatedUser))
+                .expiresIn(jwtService.getExpirationTime())
+                .build();
 
-    @GetMapping("/validate")
-    public ResponseEntity<String> validateToken(@RequestParam("token") String token) {
-        jwtService.validateToken(token);
-        return ResponseEntity.ok("Token is valid");
+        return ResponseEntity.ok(loginResponse);
     }
 }
