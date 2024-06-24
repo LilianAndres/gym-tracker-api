@@ -1,4 +1,4 @@
-package com.gym.tracker.authservice.entity;
+package com.gym.tracker.common.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;

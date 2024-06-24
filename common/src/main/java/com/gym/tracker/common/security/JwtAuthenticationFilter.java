@@ -1,4 +1,4 @@
-package com.gym.tracker.authservice.security;
+package com.gym.tracker.common.security;
 
 import com.gym.tracker.common.service.JwtService;
 import jakarta.servlet.FilterChain;
@@ -20,9 +20,9 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final HandlerExceptionResolver handlerExceptionResolver;
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    protected final HandlerExceptionResolver handlerExceptionResolver;
+    protected final JwtService jwtService;
+    protected final UserDetailsService userDetailsService;
 
     public JwtAuthenticationFilter(
             JwtService jwtService,
