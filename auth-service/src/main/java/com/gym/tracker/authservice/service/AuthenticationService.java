@@ -1,8 +1,8 @@
 package com.gym.tracker.authservice.service;
 
 import com.gym.tracker.authservice.dto.request.LoginRequest;
-import com.gym.tracker.authservice.entity.AppUser;
-import com.gym.tracker.authservice.repository.AppUserRepository;
+import com.gym.tracker.common.entity.AppUser;
+import com.gym.tracker.common.repository.AppUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,8 +13,6 @@ public class AuthenticationService {
 
     private final AppUserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationService(
@@ -24,7 +22,6 @@ public class AuthenticationService {
     ) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
     public AppUser login(LoginRequest loginRequest) {
         authenticationManager.authenticate(

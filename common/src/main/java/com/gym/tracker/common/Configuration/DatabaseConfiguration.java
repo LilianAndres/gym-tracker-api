@@ -1,7 +1,7 @@
-package com.gym.tracker.authservice.configuration;
+package com.gym.tracker.common.Configuration;
 
-import com.gym.tracker.authservice.entity.AppUser;
-import com.gym.tracker.authservice.repository.AppUserRepository;
+import com.gym.tracker.common.entity.AppUser;
+import com.gym.tracker.common.repository.AppUserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class DatabaseConfiguration {
+
     private final PasswordEncoder passwordEncoder;
 
     public DatabaseConfiguration(PasswordEncoder passwordEncoder) {
