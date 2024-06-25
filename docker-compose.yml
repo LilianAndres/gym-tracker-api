@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gym-tracker
+
+  api-discovery:
+    build:
+      context: .
+      dockerfile: ./discovery/Dockerfile
+    networks:
+      - gym-tracker
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api-discovery
+    networks:
+      - gym-tracker
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: ./auth-service/Dockerfile
+    depends_on:
+      - postgres
+      - api-discovery
+      - api-gateway
+    networks:
+      - gym-tracker
+
+networks:
+  gym-tracker:
+    external: true
+
+volumes:
+  postgres_data:
+    driver: local

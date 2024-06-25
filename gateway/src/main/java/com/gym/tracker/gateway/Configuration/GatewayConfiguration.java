@@ -12,8 +12,6 @@ public class GatewayConfiguration {
         return builder.routes()
                 .route("auth-service", r -> r.path("/api/auth/**")
                         .uri("lb://auth-service"))
-                .route("user-service", r -> r.path("/api/users/**")
-                        .uri("lb://user-service"))
                 .build();
     }
 }
