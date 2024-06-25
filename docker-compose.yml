@@ -16,15 +16,15 @@ services:
 
   api-discovery:
     build:
-      context: .
-      dockerfile: ./discovery/Dockerfile
+      context: ./discovery
+      dockerfile: Dockerfile
     networks:
       - gym-tracker
 
   api-gateway:
     build:
-      context: .
-      dockerfile: ./gateway/Dockerfile
+      context: ./gateway
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
@@ -35,7 +35,7 @@ services:
   auth-service:
     build:
       context: .
-      dockerfile: ./auth-service/Dockerfile
+      dockerfile: auth-service/Dockerfile
     depends_on:
       - postgres
       - api-discovery
