@@ -1,4 +1,4 @@
-package com.gym.tracker.common.Configuration;
+package com.gym.tracker.common.configuration;
 
 import com.gym.tracker.common.entity.AppUser;
 import com.gym.tracker.common.repository.AppUserRepository;
