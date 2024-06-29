@@ -1,29 +1,27 @@
 package com.gym.tracker.authservice.service;
 
+import com.gym.tracker.authservice.client.UserClient;
 import com.gym.tracker.authservice.dto.request.LoginRequest;
-import com.gym.tracker.common.entity.AppUser;
-import com.gym.tracker.common.repository.AppUserRepository;
+import com.gym.tracker.authservice.dto.response.AppUserDTO;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationService {
-
-    private final AppUserRepository userRepository;
-
     private final AuthenticationManager authenticationManager;
+    private final UserClient userClient;
 
     public AuthenticationService(
-            AppUserRepository userRepository,
             AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder
+            UserClient userClient
     ) {
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
+        this.userClient = userClient;
     }
-    public AppUser login(LoginRequest loginRequest) {
+
+    public AppUserDTO login(LoginRequest loginRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -31,7 +29,11 @@ public class AuthenticationService {
                 )
         );
 
-        return userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow();
+        AppUserDTO appUserDTO = userClient.findByEmail(loginRequest.getEmail());
+        if (appUserDTO == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return appUserDTO;
     }
 }
