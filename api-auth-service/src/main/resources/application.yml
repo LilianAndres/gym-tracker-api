@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: api-auth-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+server:
+  port: 8082
+
+
+eureka:
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: http://api-discovery:8761/eureka
+
+jwt:
+  secret: sM1eVxXeO3GZj2js87+V1QI0l6ZnN2Q7Wj5aQ7hjOo8=
+  expiration: 3600000
+
+logging:
+  level:
+    web: debug

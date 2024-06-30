@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: http://api-discovery:8761/eureka
