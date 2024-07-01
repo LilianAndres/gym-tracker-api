@@ -6,12 +6,13 @@ import com.gym.tracker.authservice.dto.response.LoginResponse;
 import com.gym.tracker.authservice.service.AuthenticationService;
 import com.gym.tracker.authservice.utils.JwtService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@Slf4j
 public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
@@ -25,17 +26,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest authRequest) {
-        try {
-            UserDTO authenticatedUser = authenticationService.login(authRequest);
-            LoginResponse loginResponse = LoginResponse.builder()
-                    .token(jwtService.generateToken(authenticatedUser))
-                    .expiresIn(jwtService.getExpirationTime())
-                    .build();
+    public ResponseEntity<?> login(@RequestBody LoginRequest authRequest) {
+        UserDTO authenticatedUser = authenticationService.login(authRequest);
+        LoginResponse loginResponse = LoginResponse.builder()
+                .token(jwtService.generateToken(authenticatedUser))
+                .expiresIn(jwtService.getExpirationTime())
+                .build();
 
-            return ResponseEntity.ok(loginResponse);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e);
-        }
+        return ResponseEntity.ok(loginResponse);
     }
 }
