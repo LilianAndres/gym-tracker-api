@@ -14,4 +14,4 @@ eureka:
   client:
     fetch-registry: true
     service-url:
-      defaultZone: http://api-discovery:8761/eureka
+      defaultZone: http://${EUREKA_SERVER_HOSTNAME:localhost}:8761/eureka

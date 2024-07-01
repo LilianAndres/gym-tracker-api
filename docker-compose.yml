@@ -2,16 +2,13 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: gymtracker
+    build:
+      context: ./database
+      dockerfile: Dockerfile
     ports:
-      - "5433:5432"
-    volumes:
-      - ./database:/docker-entrypoint-initdb.d/
-      # - postgres_data:/var/lib/postgresql/data
+      - "5432:5432"
+    #volumes:
+      #- postgres_data:/var/lib/postgresql/data
     networks:
       - gym-tracker
 
@@ -28,6 +25,8 @@ services:
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
+    environment:
+      - EUREKA_SERVER_HOSTNAME=api-discovery
     ports:
       - "8080:8080"
     depends_on:
@@ -39,6 +38,8 @@ services:
     build:
       context: ./api-auth-service
       dockerfile: Dockerfile
+    environment:
+      - EUREKA_SERVER_HOSTNAME=api-discovery
     depends_on:
       - postgres
       - api-discovery
@@ -50,6 +51,9 @@ services:
     build:
       context: ./api-user-service
       dockerfile: Dockerfile
+    environment:
+      - EUREKA_SERVER_HOSTNAME=api-discovery
+      - DATABASE_SERVER_HOSTNAME=postgres
     depends_on:
       - postgres
       - api-discovery
